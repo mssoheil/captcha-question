@@ -20,6 +20,8 @@ interface IState {
 	dataArray: any[];
 	correctNormalizedDataArray: any[];
 	uncorrectNormalizedDataArray: any[];
+	checkboxTruthArray: any[];
+	checkboxFalsyArray: any[];
 }
 // styles
 const Wrapper = styled.div`
@@ -46,8 +48,10 @@ const CaptchaTitle: React.FC<IProps> = props => {
 		dataArray: [],
 		correctNormalizedDataArray: [],
 		uncorrectNormalizedDataArray: [],
+		checkboxTruthArray: [],
+		checkboxFalsyArray: [],
 	});
-	const [state, dispatch] = React.useReducer(reducer, initialState);
+	const [state, dispatch] = React.useReducer(reducer, initialState());
 
 	/**
 	 * Shuffles array in place. ES6 version
@@ -123,8 +127,27 @@ const CaptchaTitle: React.FC<IProps> = props => {
 	}, [isCorrect, correctData, uncorrectData]);
 
 	function handleCheckBoxChange(status: boolean, value: NormalizeData) {
-		console.log("DEBUG: handleCheckBoxChange -> value", value);
 		console.log("DEBUG: handleCheckBoxChange -> status", status);
+		const truthyArray = state.checkboxTruthArray;
+		const falsyArray = state.checkboxFalsyArray;
+
+		if (value.isCorrect === isCorrect) {
+			if (status) {
+				truthyArray.push(value.clause);
+			} else {
+				truthyArray.pop();
+			}
+		} else {
+			if (status) {
+				falsyArray.push(value.clause);
+			} else {
+				falsyArray.pop();
+			}
+		}
+		dispatch({
+			checkboxTruthArray: truthyArray,
+			checkboxFalsyArray: falsyArray,
+		});
 	}
 
 	console.log("DEBUG: dataArray", state.dataArray);
@@ -136,6 +159,7 @@ const CaptchaTitle: React.FC<IProps> = props => {
 						{item.clause}
 					</AntdCheckBox>
 				))}
+			{console.log(state.checkboxFalsyArray)}
 		</Wrapper>
 	);
 };
