@@ -3,10 +3,15 @@ import * as React from "react";
 import styled from "@emotion/styled";
 // shared components
 import CaptchaTitle from "../captcha-title";
+import CaptchaContent from "../captcha-content";
+// data
+import correctData from "../../data/correct-data.json";
+import uncorrectData from "../../data/uncorrect-data.json";
 // styles
 const Wrapper = styled.div`
 	display: flex;
 	justify-content: center;
+	flex-direction: column;
 	padding-top: 20px;
 `;
 // types
@@ -44,6 +49,13 @@ const Captcha: React.FC<IProps> = props => {
 	return (
 		<Wrapper>
 			<CaptchaTitle randomNumber={randomNumber} isCorrect={isCorrect} />
+			<CaptchaContent
+				randomNumber={randomNumber}
+				isCorrect={isCorrect}
+				correctData={correctData["en"]}
+				uncorrectData={uncorrectData["en"]}
+				maxNumberOfItems={maxNumberOfItems}
+			/>
 		</Wrapper>
 	);
 };
