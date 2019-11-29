@@ -6,7 +6,7 @@ import Captcha from "./components/captcha";
 const App: React.FC = () => {
 	return (
 		<div className="App">
-			<Captcha />
+			<Captcha maxNumberOfItems={6} />
 		</div>
 	);
 };
