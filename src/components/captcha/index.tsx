@@ -1,6 +1,7 @@
 import * as React from "react";
 // UI frameworks
 import styled from "@emotion/styled";
+import { message } from "antd";
 // shared components
 import CaptchaTitle from "../captcha-title";
 import CaptchaContent from "../captcha-content";
@@ -46,17 +47,19 @@ const Captcha: React.FC<IProps> = props => {
     });
   }, [maxNumberOfItems]);
 
-  React.useEffect(() => {
-    console.log("IS HUMAN", state.isHuman);
-  });
-
   function changeIsHuman(isHuman: boolean) {
     dispatch({
       isHuman
     });
+
+    if (isHuman) {
+      message.success("Welcome human");
+    } else {
+      message.error("You are a robot, you can't fool me.");
+    }
   }
 
-  const { randomNumber, isCorrect, isHuman } = state;
+  const { randomNumber, isCorrect } = state;
 
   return (
     <Wrapper>
@@ -67,11 +70,10 @@ const Captcha: React.FC<IProps> = props => {
         correctData={correctData["en"]}
         uncorrectData={uncorrectData["en"]}
         maxNumberOfItems={maxNumberOfItems}
-        isHuman={isHuman}
         setIsHuman={changeIsHuman}
       />
     </Wrapper>
   );
 };
 
-export default React.memo(Captcha);
+export default Captcha;

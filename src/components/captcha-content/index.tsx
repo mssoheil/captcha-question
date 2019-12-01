@@ -3,6 +3,8 @@ import * as React from "react";
 import styled from "@emotion/styled";
 // shared components
 import AntdCheckBox from "../ant-checkbox";
+import AntdButton from "../ant-button";
+import { Row, Col } from "antd";
 // types
 
 interface NormalizeData {
@@ -15,7 +17,6 @@ interface IProps {
   correctData: any[];
   uncorrectData: any[];
   maxNumberOfItems: number;
-  isHuman: boolean;
   setIsHuman: (isHuman: boolean) => void;
 }
 interface IState {
@@ -62,7 +63,6 @@ const CaptchaTitle: React.FC<IProps> = props => {
     correctData,
     uncorrectData,
     maxNumberOfItems,
-    isHuman,
     setIsHuman
   } = props;
 
@@ -150,10 +150,13 @@ const CaptchaTitle: React.FC<IProps> = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isCorrect, correctData, uncorrectData]);
 
-  function handleCheckBoxChange(
-    status: boolean,
-    { item, index }: { item: NormalizeData; index: number }
-  ) {
+  function handleCheckBoxChange({
+    item,
+    index
+  }: {
+    item: NormalizeData;
+    index: number;
+  }) {
     if (state.selectedCheckboxes.find((item: any) => item.index === index)) {
       dispatch({
         selectedCheckboxes: state.selectedCheckboxes.filter(
@@ -182,22 +185,25 @@ const CaptchaTitle: React.FC<IProps> = props => {
       {state.dataArray &&
         state.dataArray.map((item: NormalizeData, index: number) => (
           <CheckBoxWrapper key={randomString()}>
-            <input
-              id={`checkbox-item__${index}`}
-              type="checkbox"
+            <AntdCheckBox
               checked={Boolean(
                 state.selectedCheckboxes.find(
                   (item: any) => item.index === index
                 )
               )}
-              onChange={e =>
-                handleCheckBoxChange(e.target.checked, { item, index })
-              }
-            />
-            {item.clause}
+              onChange={() => handleCheckBoxChange({ item, index })}
+            >
+              {item.clause}
+            </AntdCheckBox>
           </CheckBoxWrapper>
         ))}
-      <button onClick={handleClick}>submit</button>
+      <Row>
+        <Col span={12} offset={6}>
+          <AntdButton onClick={handleClick} type="primary">
+            submit
+          </AntdButton>
+        </Col>
+      </Row>
     </Wrapper>
   );
 };
