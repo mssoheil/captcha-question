@@ -23,10 +23,9 @@ interface IProps {
 interface IState {
   randomNumber: number;
   isCorrect: boolean;
-  isHuman: boolean;
 }
 
-function reducer(state: any, action: any) {
+function reducer(state: IState, action: IState): IState {
   return { ...state, ...action };
 }
 
@@ -35,10 +34,9 @@ const Captcha: React.FC<IProps> = props => {
 
   const initialState = (): IState => ({
     randomNumber: 0,
-    isCorrect: true,
-    isHuman: false
+    isCorrect: true
   });
-  const [state, dispatch] = React.useReducer(reducer, initialState);
+  const [state, dispatch] = React.useReducer(reducer, initialState());
 
   React.useEffect(() => {
     dispatch({
@@ -47,11 +45,13 @@ const Captcha: React.FC<IProps> = props => {
     });
   }, [maxNumberOfItems]);
 
-  function changeIsHuman(isHuman: boolean) {
-    dispatch({
-      isHuman
-    });
-
+  /**
+   * checks the isHuman status and shows an alert accordingly
+   *
+   * @param {boolean} isHuman
+   * @returns {void}
+   */
+  function changeIsHuman(isHuman: boolean): void {
     if (isHuman) {
       message.success("Welcome human");
     } else {

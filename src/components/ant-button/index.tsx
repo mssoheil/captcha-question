@@ -5,6 +5,7 @@ import { ButtonProps } from "antd/lib/button";
 // types
 interface IProps extends ButtonProps {
   children?: React.ReactNode;
+  [key: string]: any;
 }
 
 const Button: React.FC<IProps> = (
